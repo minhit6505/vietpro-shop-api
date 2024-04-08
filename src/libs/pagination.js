@@ -1,13 +1,13 @@
 const pagination = async (model, query, page, limit) => {
-    const totalRows = await model.find(query).countDocuments();
-    const totalPages = Math.ceil(totalRows / limit);
+    const total = await model.find(query).countDocuments();
+    const totalPages = Math.ceil(total / limit);
     const next = page + 1;
     const prev = page - 1;
     const hasNext = page + 1 <= totalPages ? true : false;
     const hasPrev = page - 1 > 0 ? true : false;
   
     return {
-      totalRows, 
+      total, 
       totalPages,
       currentPage: page,
       next,

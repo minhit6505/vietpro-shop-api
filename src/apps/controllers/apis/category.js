@@ -21,8 +21,9 @@ exports.index = async (req, res)=>{
             },
             data: {
                 docs: categories,
+                pages: await pagination(CategoryModel, query, page, limit),
             },
-            pages: await pagination(CategoryModel, query, page, limit),
+            
         });
 }
 exports.show = async (req, res)=>{
@@ -56,7 +57,8 @@ exports.productsCategory = async (req, res)=>{
             },
             data:{
                 docs: products,
+                pages: await pagination(ProductModel, query, page, limit),
             },
-            pages: await pagination(ProductModel, query, page, limit),
+            
         })
 }

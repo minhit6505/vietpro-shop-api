@@ -31,8 +31,9 @@ exports.index = async (req, res)=>{
             },
             data: {
                 docs: products,
+                pages: await pagination(ProductModel, query, page, limit),
             },
-            pages: await pagination(ProductModel, query, page, limit),
+            
     });
 }
 
@@ -62,8 +63,9 @@ exports.comments = async (req, res)=>{
             status: "success",
             data:{
                 docs: comments,
+                pages: await pagination(CommentModel, query, page, limit),
             },
-            pages: await pagination(CommentModel, query, page, limit),
+            
         });
 }
 exports.storeComments = async (req, res)=>{
