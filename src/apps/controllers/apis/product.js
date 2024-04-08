@@ -9,8 +9,15 @@ exports.index = async (req, res)=>{
         query.$text = {$search: name}
     }
     // Logic Query
-    query.is_featured = req.query.is_featured || false;
-    query.is_stock = req.query.is_stock || true;
+    // query.is_featured = req.query.is_featured || false;
+    // query.is_stock = req.query.is_stock || true;
+    if(req.query.is_featured){
+        query.is_featured = req.query.is_featured;
+    }
+    if(req.query.is_stock){
+        query.is_stock = req.query.is_stock;
+    }
+
     // Pagination
     const limit = parseInt(req.query.limit) || 10;
     const page = parseInt(req.query.page) || 1;
