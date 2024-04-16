@@ -52,6 +52,7 @@ exports.order = async (req, res)=>{
     */
     res 
         .status(201).json({
+            data: body,
             status: "success",
             message: "Create order successfully",
         });
