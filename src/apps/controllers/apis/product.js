@@ -1,4 +1,4 @@
-yconst ProductModel = require("../../models/product");
+const ProductModel = require("../../models/product");
 const CommentModel = require("../../models/comment");
 const pagination = require("../../../libs/pagination");
 exports.index = async (req, res)=>{
