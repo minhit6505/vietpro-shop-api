@@ -17,7 +17,7 @@ exports.order = async (req, res)=>{
         totalPrice,
         items: body.items,
     };
-    await OrderModel(order).save();
+    // await OrderModel(order).save();
   
     /*
     const idsPrd = body.items.map((item)=>item.prd_id);
