@@ -1,4 +1,4 @@
-const ProductModel = require("../../models/product");
+yconst ProductModel = require("../../models/product");
 const CommentModel = require("../../models/comment");
 const pagination = require("../../../libs/pagination");
 exports.index = async (req, res)=>{
@@ -6,7 +6,7 @@ exports.index = async (req, res)=>{
     // Text Search
     const name = req.query.name || "";
     if(name){
-        query.$text = {$search: name}
+        query.$text = {$search: name} 
     }
     // Logic Query
     // query.is_featured = req.query.is_featured || false;
@@ -77,7 +77,7 @@ exports.comments = async (req, res)=>{
 }
 exports.storeComments = async (req, res)=>{
     const {id} = req.params;
-    const body = req.body;
+    const body = req.query;
     const comment = {
         name: body.name,
         email: body.email,
