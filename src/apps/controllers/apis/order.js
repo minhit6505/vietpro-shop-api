@@ -5,6 +5,7 @@ const _ = require("lodash");
 const ejs = require("ejs");
 const path = require("path");
 exports.order = async (req, res)=>{
+    /*
     const body = req.query;
     let totalPrice = 0;
     totalPrice = body.items.reduce((total, item)=>total + item.qty*item.price, 0);
@@ -17,6 +18,7 @@ exports.order = async (req, res)=>{
         items: body.items,
     };
     await OrderModel(order).save();
+    */
     /*
     const idsPrd = body.items.map((item)=>item.prd_id);
     const products = await ProductModel.find({_id: {$in: idsPrd}}).lean();
