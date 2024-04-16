@@ -77,7 +77,7 @@ exports.comments = async (req, res)=>{
 }
 exports.storeComments = async (req, res)=>{
     const {id} = req.params;
-    const body = req.query;
+    const body = req.body;
     const comment = {
         name: body.name,
         email: body.email,
