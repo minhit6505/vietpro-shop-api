@@ -7,6 +7,7 @@ const path = require("path");
 exports.order = async (req, res)=>{
  
     const body = req.body;
+ /*
     let totalPrice = 0;
     totalPrice = body.items.reduce((total, item)=>total + item.qty*item.price, 0);
     const order = {
@@ -17,8 +18,8 @@ exports.order = async (req, res)=>{
         totalPrice,
         items: body.items,
     };
-    // await OrderModel(order).save();
-  
+    await OrderModel(order).save();
+  */
     /*
     const idsPrd = body.items.map((item)=>item.prd_id);
     const products = await ProductModel.find({_id: {$in: idsPrd}}).lean();
