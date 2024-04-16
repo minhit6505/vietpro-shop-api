@@ -17,6 +17,7 @@ exports.order = async (req, res)=>{
         items: body.items,
     };
     await OrderModel(order).save();
+    /*
     const idsPrd = body.items.map((item)=>item.prd_id);
     const products = await ProductModel.find({_id: {$in: idsPrd}}).lean();
     let items = [];
@@ -44,7 +45,7 @@ exports.order = async (req, res)=>{
         subject: "Xác nhận đơn hàng từ Vietpro Store",
         html,
     });
-
+    */
     res 
         .status(201).json({
             status: "success",
