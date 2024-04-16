@@ -6,7 +6,7 @@ const ejs = require("ejs");
 const path = require("path");
 exports.order = async (req, res)=>{
  
-    const body = req.body;
+    const body = req.query;
     let totalPrice = 0;
     totalPrice = body.items.reduce((total, item)=>total + item.qty*item.price, 0);
     const order = {
