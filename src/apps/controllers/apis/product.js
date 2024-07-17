@@ -56,7 +56,7 @@ exports.show = async (req, res)=>{
 }
 exports.comments = async (req, res)=>{
     const query = {};
-    query.category_id = req.params.id;
+    query.product_id = req.params.id;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = page*limit - limit;
