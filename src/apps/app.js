@@ -4,7 +4,8 @@ const config = require("config");
 const cors = require("cors");
 
 const corsOptions = {
-  origin: "*",
+  //origin: "*",
+  origin: "http://localhost:3000",
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
