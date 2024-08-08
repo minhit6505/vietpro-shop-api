@@ -1,5 +1,9 @@
 const mongoose = require("../../common/database")();
 const orderSchema = new mongoose.Schema({
+    customer_id:{
+        type: mongoose.Types.ObjectId,
+        required: true,
+    },
     fullName:{
         type: String,
         required: true,
@@ -20,6 +24,10 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true,
         default: 0,
+    },
+    status:{
+        type: Number,
+        default: 1,
     },
     items:[
         {
