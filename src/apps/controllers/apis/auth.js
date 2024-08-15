@@ -19,6 +19,10 @@ module.exports = {
         email: body.email,
       });
       if (isCustomer) return res.status(400).json("email exists");
+      const isPhone = await CustomerModel.findOne({
+        phone: body.phone,
+      });
+      if (isPhone) return res.status(400).json("phone exists");
       const customer = {
         fullName: body.fullName,
         email: body.email,
