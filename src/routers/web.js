@@ -19,6 +19,7 @@ router.post("/order", OrderController.order);
 router.get("/sliders", SliderController.index);
 router.get("/banners", BannerController.index);
 router.post("/customers/register", AuthController.registerCustomer);
+router.post("/customers/:id/update", CustomerConrtoller.update);
 router.post("/customers/login", AuthController.loginCustomer);
 router.get("/customers/:id/orders", OrderController.index);
 router.get("/customer/orders/:id/canceled", OrderController.canceled);
