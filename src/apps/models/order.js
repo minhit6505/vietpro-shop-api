@@ -33,7 +33,7 @@ const orderSchema = new mongoose.Schema({
         {
             prd_id:{
                 type: String,
-                required: true,
+                required: true, 
             },
             qty:{
                 type: Number,

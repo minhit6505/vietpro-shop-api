@@ -74,6 +74,18 @@ module.exports = {
       message: "Create order successfully",
     });
   },
+  show: async (req, res)=>{
+    try {
+      const {id} = req.params;
+      const order = await OrderModel.findById(id);
+      return res.status(200).json({
+        status: "success",
+        data: order,
+      });
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  }, 
   canceled: async (req, res)=>{
     try {
       const {id} = req.params;
