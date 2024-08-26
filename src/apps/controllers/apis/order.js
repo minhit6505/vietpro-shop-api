@@ -75,12 +75,31 @@ module.exports = {
     });
   },
   show: async (req, res)=>{
+    // API đang trả về thiếu ảnh sản phẩm, tên sản phẩm
     try {
       const {id} = req.params;
       const order = await OrderModel.findById(id);
+      const items = order.items;
+      const prdIds = await items.map((item)=>item.prd_id);
+      const products = await ProductModel.find({_id: {$in: prdIds}});
+      const newItems = [];
+      for(let product of products){
+        const item = _.find(items, {
+          prd_id: product._id.toString()
+        });
+        if(item){
+          item.name = product.name;
+          item.image = product.image;
+          newItems.push(item);
+        }
+      }
+      
       return res.status(200).json({
         status: "success",
-        data: order,
+        data: {
+          ...order,
+          items: newItems,
+        },
       });
     } catch (error) {
       return res.status(500).json(error);
