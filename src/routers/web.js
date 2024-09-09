@@ -7,6 +7,7 @@ const SliderController = require("../apps/controllers/apis/slider");
 const BannerController = require("../apps/controllers/apis/banner");
 const CustomerConrtoller = require("../apps/controllers/apis/customer");
 const AuthController = require("../apps/controllers/apis/auth");
+const AuthMiddleware = require("../apps/middlewares/auth");
 
 router.get("/categories", CategoryController.index);
 router.get("/categories/:id", CategoryController.show);
@@ -24,5 +25,11 @@ router.post("/customers/login", AuthController.loginCustomer);
 router.get("/customers/:id/orders", OrderController.index);
 router.get("/customer/orders/:id", OrderController.show);
 router.get("/customer/orders/:id/canceled", OrderController.canceled);
+router.get("/test/authentication",
+    AuthMiddleware.verifyAuthenticationCustomer, 
+    (req, res)=>{
+        return res.status(200).json("You have access");
+    }
+);
 
 module.exports = router;
