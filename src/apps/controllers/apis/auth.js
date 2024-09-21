@@ -1,9 +1,10 @@
 const CustomerModel = require("../../models/customers");
+const TokenModel = require("../../models/token");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const generateAccessToken = (customer) => {
   return jwt.sign({ _id: customer._id }, config.get("app.jwtAccessKey"), {
-    expiresIn: "15s",
+    expiresIn: "1d",
   });
 };
 const generateRefreshToken = (customer) => {
@@ -49,6 +50,28 @@ module.exports = {
         const accessToken = generateAccessToken(isCustomer);
         const refreshToken = generateRefreshToken(isCustomer);
         const { password, ...others } = isCustomer._doc;
+        /*
+          Kiểm tra xem trước đó user đã có token hay chưa
+          Nếu chưa thì thêm mới token
+          Nếu đã có rồi thì chuyển token cũ vào redis và lưu token mới
+        */
+        const isTokenInDB = await TokenModel.find({
+          customerId: isCustomer._id,
+        }).countDocuments();
+        if(isTokenInDB > 0){
+          // Move Token to Redis
+
+          // Delete old Token
+          await TokenModel.deleteMany();
+        }
+        // Ínert new Token to Database
+        await new TokenModel({
+          accessToken,
+          refreshToken,
+          customerId: isCustomer._id,
+        }).save();
+        
+        // Return Token to client
         res.cookie("refreshToken", refreshToken);
         return res.status(200).json({
           customer: others,
@@ -59,5 +82,44 @@ module.exports = {
       return res.status(500).json(error);
     }
   },
-  logoutCustomer: async (req, res) => {},
+  logoutCustomer: async (req, res) => {
+    try {
+      const { id } = req.params;
+      
+      // Move token to redis
+
+      // Delete from database
+      await TokenModel.deleteOne({
+        customerId: id,
+      });
+      return res.status(200).json("logged out successfully");
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  },
+
+  refreshToken: async (req, res) => {
+    try {
+      const { refreshToken } = req.cookies;
+      jwt.verify(
+        refreshToken,
+        config.get("app.jwtRefreshKey"),
+        async (error, customer) => {
+          
+          if (error) return res.status(401).json("Authentication required");
+          const newAccessToken = generateAccessToken(customer);
+          // update accessToken then refreshToken
+          await TokenModel.updateOne(
+            {refreshToken},
+            {accessToken: newAccessToken,}
+          );
+          return res.status(200).json({
+            accessToken: newAccessToken,
+          });
+        }
+      );
+    } catch (error) {
+      return res.status().json(error);
+    }
+  },
 };

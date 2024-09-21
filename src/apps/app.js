@@ -1,7 +1,7 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const app = express();
 const config = require("config");
-const cookieParder = require("cookie-parser");
 const cors = require("cors");
 
 const corsOptions = {
@@ -11,7 +11,7 @@ const corsOptions = {
   optionSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
-app.use(cookieParder());
+app.use(cookieParser());
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use("/assets", express.static(`${__dirname}/../public`));

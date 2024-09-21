@@ -97,11 +97,11 @@ module.exports = {
           newItems.push(item);
         }
       }
-
+      
       return res.status(200).json({
         status: "success",
         data: {
-          ...order,
+          ...order._doc,
           items: newItems,
         },
       });

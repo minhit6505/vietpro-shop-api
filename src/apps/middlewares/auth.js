@@ -9,7 +9,10 @@ exports.verifyAuthenticationCustomer = async (req, res, next)=>{
                 verifyToken,
                 config.get("app.jwtAccessKey"),
                 (error, customer)=>{
-                    if(error) return res.status(401).json("Authentication required");
+                    if(error){
+                        if(error.name==="TokenExpiredError") return res.status(401).json("Token expired");                        
+                        return res.status(401).json("Authentication required");
+                    }
                     next();
                 }
             );   

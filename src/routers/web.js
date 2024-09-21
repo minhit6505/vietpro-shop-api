@@ -22,6 +22,8 @@ router.get("/banners", BannerController.index);
 router.post("/customers/register", AuthController.registerCustomer);
 router.post("/customers/:id/update", CustomerConrtoller.update);
 router.post("/customers/login", AuthController.loginCustomer);
+router.get("/customers/:id/logout", AuthController.logoutCustomer);
+router.get("/customer/refreshtoken", AuthController.refreshToken);
 router.get("/customers/:id/orders", OrderController.index);
 router.get("/customer/orders/:id", OrderController.show);
 router.get("/customer/orders/:id/canceled", OrderController.canceled);
