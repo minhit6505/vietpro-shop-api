@@ -1,7 +1,9 @@
 const CustomerModel = require("../../models/customers");
 const TokenModel = require("../../models/token");
 const jwt = require("jsonwebtoken");
+const {jwtDecode} = require("jwt-decode");
 const config = require("config");
+const {redisClient} = require("../../../common/init.redis");
 const generateAccessToken = (customer) => {
   return jwt.sign({ _id: customer._id }, config.get("app.jwtAccessKey"), {
     expiresIn: "1d",
@@ -12,6 +14,14 @@ const generateRefreshToken = (customer) => {
     expiresIn: "1y",
   });
 };
+const setTokenBlacklist = (token)=>{
+  const decoded = jwtDecode(token); 
+  if(decoded.exp > Date.now()/1000){
+    redisClient.set(token, token, {
+      EXAT: decoded.exp
+    });
+  }
+}
 module.exports = {
   registerCustomer: async (req, res) => {
     try {
@@ -55,16 +65,18 @@ module.exports = {
           Nếu chưa thì thêm mới token
           Nếu đã có rồi thì chuyển token cũ vào redis và lưu token mới
         */
-        const isTokenInDB = await TokenModel.find({
+        const isTokenInDB = await TokenModel.findOne({
           customerId: isCustomer._id,
-        }).countDocuments();
-        if(isTokenInDB > 0){
+        });
+        
+        if(isTokenInDB){
           // Move Token to Redis
-
+          setTokenBlacklist(isTokenInDB.accessToken);
+          
           // Delete old Token
-          await TokenModel.deleteMany();
+          await TokenModel.deleteOne();
         }
-        // Ínert new Token to Database
+        // Insert new Token to Database
         await new TokenModel({
           accessToken,
           refreshToken,
@@ -85,9 +97,12 @@ module.exports = {
   logoutCustomer: async (req, res) => {
     try {
       const { id } = req.params;
+      const isCustomer = await TokenModel.findOne({
+        customerId: id,
+      });
       
       // Move token to redis
-
+      setTokenBlacklist(isCustomer.accessToken);
       // Delete from database
       await TokenModel.deleteOne({
         customerId: id,

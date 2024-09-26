@@ -3,7 +3,8 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const config = require("config");
 const cors = require("cors");
-
+const {connectionRedis} = require("../common/init.redis");
+connectionRedis();
 const corsOptions = {
   //origin: "*",
   origin: "http://localhost:3000",
