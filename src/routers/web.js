@@ -29,7 +29,7 @@ router.post("/customers/register", AuthController.registerCustomer);
 router.post("/customers/:id/update", useAuth, CustomerConrtoller.update);
 router.post("/customers/login", AuthController.loginCustomer);
 router.get("/customers/:id/logout", useAuth, AuthController.logoutCustomer);
-router.get("/customer/refreshtoken", useAuth, AuthController.refreshToken);
+router.get("/customer/refreshtoken", AuthController.refreshToken);
 router.get("/customers/:id/orders", useAuth, OrderController.index);
 router.get("/customer/orders/:id", useAuth, OrderController.show);
 router.get("/customer/orders/:id/canceled", useAuth, OrderController.canceled);
