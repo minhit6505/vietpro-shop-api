@@ -6,7 +6,7 @@ const config = require("config");
 const {redisClient} = require("../../../common/init.redis");
 const generateAccessToken = (customer) => {
   return jwt.sign({ _id: customer._id }, config.get("app.jwtAccessKey"), {
-    expiresIn: "30s",
+    expiresIn: "1d",
   });
 };
 const generateRefreshToken = (customer) => {
