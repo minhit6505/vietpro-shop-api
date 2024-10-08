@@ -32,7 +32,7 @@ router.get("/customers/:id/logout", useAuth, AuthController.logoutCustomer);
 router.get("/customer/refreshtoken", AuthController.refreshToken);
 router.get("/customers/:id/orders", useAuth, OrderController.index);
 router.get("/customer/orders/:id", useAuth, OrderController.show);
-router.get("/customer/orders/:id/canceled", useAuth, OrderController.canceled);
+router.get("/customer/orders/:id/canceled", useAuth, OrderController.canceled); 
 router.get("/test/authentication",
     useAuth, 
     (req, res)=>{

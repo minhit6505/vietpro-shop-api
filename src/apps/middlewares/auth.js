@@ -17,7 +17,7 @@ exports.verifyAuthenticationCustomer = async (req, res, next)=>{
                         return res.status(401).json("Authentication required");
                     }
                     next();
-                }
+                } 
             );   
         }
         else{

@@ -55,7 +55,8 @@ exports.show = async (req, res)=>{
         });
 }
 exports.comments = async (req, res)=>{
-    const query = {};
+    try {
+        const query = {};
     query.product_id = req.params.id;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
@@ -74,9 +75,13 @@ exports.comments = async (req, res)=>{
             },
             
         });
+    } catch (error) {
+        return res.status(500).json(error);
+    }
 }
 exports.storeComments = async (req, res)=>{
-    const {id} = req.params;
+    try {
+        const {id} = req.params;
     const body = req.body;
     const comment = {
         name: body.name,
@@ -91,4 +96,7 @@ exports.storeComments = async (req, res)=>{
             status: "success",
             message: "create comment successfully"
         });
+    } catch (error) {
+        return res.status(500).json(error);
+    }
 }
