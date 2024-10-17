@@ -11,7 +11,7 @@ const AuthController = require("../apps/controllers/apis/auth");
 const AuthMiddleware = require("../apps/middlewares/auth");
 
 // Use/Dont use Auth for Router
-const useAuth = config.get("app.useAuthMiddleware") 
+const useAuth = config.get("app.useAuthMiddleware")  
     ? AuthMiddleware.verifyAuthenticationCustomer
     : (req, res, next)=>next();
 
