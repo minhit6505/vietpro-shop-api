@@ -84,12 +84,7 @@ module.exports = {
         }).save();
 
         // Return Token to client
-        res.cookie("refreshToken", refreshToken, {
-          // httpOnly: true, // Đảm bảo cookie không thể truy cập qua JavaScript (bảo mật)
-          // secure: process.env.NODE_ENV === "production", // Chỉ gửi cookie qua HTTPS khi môi trường là production
-          // sameSite: "Lax", // Cấu hình cookie để chỉ gửi trong cùng một site (hoặc 'Lax' nếu muốn linh hoạt hơn)
-          // maxAge: 30 * 24 * 60 * 60 * 1000, // Hết hạn sau 30 ngày
-        });
+        res.cookie("refreshToken", refreshToken);
         return res.status(200).json({
           customer: others,
           accessToken,
