@@ -1,12 +1,12 @@
 const CustomerModel = require("../../models/customers");
 const TokenModel = require("../../models/token");
 const jwt = require("jsonwebtoken");
-const {jwtDecode} = require("jwt-decode");
+const { jwtDecode } = require("jwt-decode");
 const config = require("config");
-const {redisClient} = require("../../../common/init.redis");
+const { redisClient } = require("../../../common/init.redis");
 const generateAccessToken = (customer) => {
   return jwt.sign({ _id: customer._id }, config.get("app.jwtAccessKey"), {
-    expiresIn: "1d",
+    expiresIn: "20s",
   });
 };
 const generateRefreshToken = (customer) => {
@@ -14,14 +14,14 @@ const generateRefreshToken = (customer) => {
     expiresIn: "1y",
   });
 };
-const setTokenBlacklist = (token)=>{
-  const decoded = jwtDecode(token); 
-  if(decoded.exp > Date.now()/1000){
+const setTokenBlacklist = (token) => {
+  const decoded = jwtDecode(token);
+  if (decoded.exp > Date.now() / 1000) {
     redisClient.set(token, token, {
-      EXAT: decoded.exp
+      EXAT: decoded.exp,
     });
   }
-}
+};
 module.exports = {
   registerCustomer: async (req, res) => {
     try {
@@ -68,11 +68,11 @@ module.exports = {
         const isTokenInDB = await TokenModel.findOne({
           customerId: isCustomer._id,
         });
-        
-        if(isTokenInDB){
+
+        if (isTokenInDB) {
           // Move Token to Redis
           setTokenBlacklist(isTokenInDB.accessToken);
-          
+
           // Delete old Token
           await TokenModel.deleteOne();
         }
@@ -82,7 +82,7 @@ module.exports = {
           refreshToken,
           customerId: isCustomer._id,
         }).save();
-        
+
         // Return Token to client
         res.cookie("refreshToken", refreshToken);
         return res.status(200).json({
@@ -100,7 +100,7 @@ module.exports = {
       const isCustomer = await TokenModel.findOne({
         customerId: id,
       });
-      
+
       // Move token to redis
       setTokenBlacklist(isCustomer.accessToken);
       // Delete from database
@@ -120,13 +120,12 @@ module.exports = {
         refreshToken,
         config.get("app.jwtRefreshKey"),
         async (error, customer) => {
-          
           if (error) return res.status(401).json("Authentication required");
           const newAccessToken = generateAccessToken(customer);
           // update accessToken then refreshToken
           await TokenModel.updateOne(
-            {refreshToken},
-            {accessToken: newAccessToken,}
+            { refreshToken },
+            { accessToken: newAccessToken }
           );
           return res.status(200).json({
             accessToken: newAccessToken,
